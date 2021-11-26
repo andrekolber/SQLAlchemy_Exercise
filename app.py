@@ -7,8 +7,11 @@ from models import db, connect_db, User
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'ihaveasecret'
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+
+toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
 db.create_all()
@@ -30,7 +33,7 @@ def users_list():
 def new_user_form():
     """Show a form to create a new user"""
 
-    return render_template('user/new.html')
+    return render_template('users/new.html')
 
 @app.route('/users/new', methods = ["POST"])
 def users_new():
@@ -53,7 +56,7 @@ def show_users(user_id):
 
     return render_template('/users/show.html', user = user)
 
-@app.route('users/<id:user_id>/edit')
+@app.route('/users/<int:user_id>/edit')
 def edit_user(user_id):
     """Show form to edit user info"""
 
@@ -61,7 +64,7 @@ def edit_user(user_id):
 
     return render_template('users/edit.html', user = user)
 
-@app.route('users/<int:user_id/edit>', methods = ["POST"])
+@app.route('/users/<int:user_id>/edit', methods = ["POST"])
 def update_user(user_id):
     """Form submission for updating a existing user"""
 
@@ -75,7 +78,7 @@ def update_user(user_id):
 
     return redirect('/users')
 
-@app.route('users/<int:user_id/delete>', methods = ["POST"])
+@app.route('/users/<int:user_id>/delete', methods = ["POST"])
 def delete_user(user_id):
     """Form submission for deleting an existing user"""
 

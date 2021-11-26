@@ -66,5 +66,5 @@ class BloglyTestCase(TestCase):
             resp = client.post("/users/<int:user_id/delete>", data = d, follow_redirects = True)
             html = resp.get_data(as_text=True)
 
-            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.status_code, 404)
             self.assertNotIn("Test1 User1", html)
