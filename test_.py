@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from app import app
-from models import db, User
+from models import db, User, Post
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly_test'
 app.config['SQLALCHEMY_ECHO'] = False
@@ -22,6 +22,7 @@ class BloglyTestCase(TestCase):
         user = User(first_name = "Test",
                     last_name = "User",
                     image_url = "https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png")
+                    
         
         db.session.add(user)
         db.session.commit()
@@ -68,3 +69,12 @@ class BloglyTestCase(TestCase):
 
             self.assertEqual(resp.status_code, 404)
             self.assertNotIn("Test1 User1", html)
+
+    def test_add_post(self):
+        with app.test_client() as client:
+            d = {"title": "Upper Side Dreamin", "content": "upperside dreamin yeah", "user_id": 1}
+            resp = client.post("/users/<int:user_id>/posts/new", data = d, follow_redirects = True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 404)
+            
