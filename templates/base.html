@@ -18,6 +18,14 @@
                 <a class="btn" href="/users/new">Add User</a>
             </li>
         </ul>
+        <ul class="navbar-nav">
+            <li><a href="/tags">Tags</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="navbar-nav"><a href="/tags/new">Add tag</a>
+            </li>
+        </ul>
     </nav>
     <div class="container">
         {% for msg in get_flashed_messages() %}

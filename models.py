@@ -1,6 +1,7 @@
 """Models for Blogly."""
 
 import datetime
+from enum import unique
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import backref
 
@@ -11,7 +12,7 @@ DEFAULT_IMAGE_URL = "https://www.kindpng.com/picc/m/24-248253_user-profile-defau
 
 
 class User(db.Model):
-    """Site User"""
+    """Model for Site User"""
 
     __tablename__ = "users"
 
@@ -53,6 +54,25 @@ class Post(db.Model):
 
         return self.created_at.strftime("%a %b %-d  %Y, %-I:%M %p")
 
+
+class Tag(db.Model):
+    """Model for Tag than can be added to posts"""
+
+    __tablename__ = 'tags'
+
+    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    name = db.Column(db.Text, nullable = False, unique = True)
+
+    posts = db.relationship('Post', secondary = "posts_tags", backref = "tags")
+
+
+class PostTag(db.Model):
+    """Model for Tag on a Post"""
+
+    __tablename__ = 'posts_tags'
+
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key = True) 
+    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key = True)
 
 
 def connect_db(app):

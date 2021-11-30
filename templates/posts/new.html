@@ -16,9 +16,20 @@
         <label for="content">Content:</label>
         <textarea type="text" name="content" id="content" placeholder="Post Content Here"></textarea>
     </div>
-    <br><br>
+
     <div>
-        <a href="/users/{{user.id}}/">Cancel</a>
+        {% for tag in tags %}
+        <div>
+        <input type="checkbox" value="{{tag.id}}" name="tags" id="tag_{{tag.id}}">
+        <label for="tag_{{tag.id}}">
+            {{tag.name}}
+        </label>
+        </div>
+        {% endfor %}
+    </div>
+    <br>
+    <div>
+        <a href="/users/{{user.id}}">Cancel</a>
         <button type="submit">Add</button>
     </div>
 </form>
